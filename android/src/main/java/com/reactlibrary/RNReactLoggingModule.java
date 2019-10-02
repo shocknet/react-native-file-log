@@ -42,12 +42,16 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void printLog(String content) {
+    public void printLog(String content, final Promise promise) {
         if (consoleLog) {
             Log.d(tag, content);
         }
+
         if (fileLog) {
-            writeLogToFile(content);
+            String logResult = writeLogToFile(content);
+            promise.resolve(logResult);
+        } else {
+            promise.resolve("File log disabled");
         }
     }
 
@@ -65,22 +69,28 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
     }
 
 
-    void writeLogToFile(String content) {
+    String writeLogToFile(String content) {
         File logDirectory = new File( Environment.getExternalStorageDirectory() + "/AeffeCQ" );
         File logFolder = new File(logDirectory + "/log");
 
         // create app folder
         if ( !logDirectory.exists() ) {
-            logDirectory.mkdir();
+            Boolean directoryCreated = logDirectory.mkdir();
+            if (!directoryCreated) {
+                return "Failed to create directory";
+            }
         }
 
         // create log folder
         if ( !logFolder.exists() ) {
-            logFolder.mkdir();
+            Boolean folderCreated = logFolder.mkdir();
+            if (!folderCreated) {
+                return "Failed to create folder";
+            }
         }
 
         if (!logFolder.exists() && !logFolder.mkdir()) {
-            return;
+            return "Folder not found";
         }
 
         // get latest log file
@@ -120,7 +130,7 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
         }
         if (logFile == null) {
             Log.e(tag, "Cannot create log file");
-            return;
+            return "Cannot create log file";
         }
         try {
             FileWriter fw = new FileWriter(logFile, true);
@@ -128,8 +138,10 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
             fw.write(tag + " - " + currentTime + " - " + content);
             fw.append("\n");
             fw.close();
+            return tag + " - " + currentTime + " - " + content;
         } catch (IOException e) {
             e.printStackTrace();
+            return "An unknown error has occurred";
         }
     }
 
