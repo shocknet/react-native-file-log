@@ -4,7 +4,6 @@ const { RNReactLogging } = NativeModules;
 
 export default {
   log: (...content) => {
-    console.log(...content);
     const logData = content.map(logItem => {
       try {
         if (typeof logItem === "object") {
@@ -19,7 +18,9 @@ export default {
         return logItem;
       }
     });
-    RNReactLogging.printLog(logData.join(" "));
+    console.log(logData.join(" "));
+    const loggedData = RNReactLogging.printLog(logData.join(" "));
+    console.log(loggedData);
   },
   setTag: tag => {
     RNReactLogging.setTag(tag);
