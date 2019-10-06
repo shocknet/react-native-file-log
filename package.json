@@ -1,6 +1,6 @@
 {
   "name": "react-native-file-log",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Write log to file for React native app",
   "main": "index.js",
   "scripts": {
@@ -26,4 +26,3 @@
   },
   "homepage": "https://github.com/LeoLucaNexsoft/react-native-file-log#readme"
 }
-
