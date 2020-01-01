@@ -1,5 +1,5 @@
 
-package com.reactlibrary;
+package com.reactfilelogger;
 
 import android.util.Log;
 import android.os.Environment;
