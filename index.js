@@ -41,6 +41,8 @@ export default {
 			);
 			permissionsAccepted =
 				readPermissions === "granted" && writePermissions === "granted";
+		} else {
+			permissionsAccepted = true;
 		}
 		if (permissionsAccepted) {
 			RNReactLogging.setFileLogEnabled(enabled);
