@@ -70,7 +70,7 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
 
 
     String writeLogToFile(String content) {
-        File logDirectory = new File( Environment.getExternalStorageDirectory() + "/AeffeCQ" );
+        File logDirectory = new File( Environment.getExternalStorageDirectory() + "/" + tag );
         File logFolder = new File(logDirectory + "/log");
 
         // create app folder
