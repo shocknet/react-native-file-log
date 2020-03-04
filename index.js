@@ -1,4 +1,4 @@
-import { NativeModules, PermissionsAndroid } from "react-native";
+import { NativeModules, PermissionsAndroid, Platform } from "react-native";
 
 const { RNReactLogging } = NativeModules;
 
