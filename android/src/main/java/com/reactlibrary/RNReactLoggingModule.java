@@ -29,7 +29,7 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
     private String tag = "RNReactLogging";
     private boolean consoleLog = true;
     private boolean fileLog = false;
-    private long maxFileSize = 512 * 1024; // 512 kb
+    private int maxFileSize = 512 * 1024; // 512 kb
 
     public RNReactLoggingModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -161,7 +161,7 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setMaxFileSize(long maxFileSize) {
+    public void setMaxFileSize(int maxFileSize) {
         this.maxFileSize = maxFileSize;
     }
 
