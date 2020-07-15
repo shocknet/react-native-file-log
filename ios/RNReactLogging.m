@@ -14,6 +14,7 @@ NSString *tag = @"RNReactLogging";
 BOOL consoleLog = YES;
 BOOL fileLog = NO;
 long maxFileSize = 512 * 1024; // 512 kb
+int maxLogFiles = 3;
 
 RCT_EXPORT_METHOD(printLog:(NSString *)content) {
     if (consoleLog) {
@@ -118,6 +119,10 @@ RCT_EXPORT_METHOD(setFileLogEnabled: (BOOL)enabled) {
     fileLog = enabled;
 }
 
+RCT_EXPORT_METHOD(setMaxLogFiles: (NSInteger)filesLength) {
+    maxLogFiles = filesLength;
+}
+
 RCT_EXPORT_METHOD(setMaxFileSize: (NSInteger)maxSize) {
     maxFileSize = maxSize;
 }
@@ -171,6 +176,19 @@ RCT_EXPORT_METHOD(setMaxFileSize: (NSInteger)maxSize) {
 //                                }
                                 return comp;
                             }];
+
+    if (sortedFiles.count > maxLogFiles) {
+        int index = 0;
+        for (NSDictionary* file in sortedFiles) {
+            if (index == sortedFiles.count - 1) {
+                break;
+            }
+            NSString* logFilePath = [file objectForKey:@"path"];
+            [[NSFileManager defaultManager] removeItemAtPath:logFilePath];
+            index = index + 1;
+        }
+    }
+    
     if (sortedFiles.count > 0) {
         return [sortedFiles[sortedFiles.count - 1] objectForKey:@"path"];
     }

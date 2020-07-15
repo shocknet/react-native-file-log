@@ -29,6 +29,7 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
     private String tag = "RNReactLogging";
     private boolean consoleLog = true;
     private boolean fileLog = false;
+    private int maxLogFiles = 3;
     private long maxFileSize = 512 * 1024; // 512 kb
 
     public RNReactLoggingModule(ReactApplicationContext reactContext) {
@@ -120,8 +121,14 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
                     return 0;
                 }
             });
+            if (logFiles.length > maxLogFiles) {
+                File[] oldLogFiles = Arrays.copyOfRange(logFiles, 0, logFiles.length - 1);
+                for (File oldLogFile : oldLogFiles) {
+                    oldLogFile.delete();
+                }
+            }
             File lastLogFile = logFiles[logFiles.length - 1];
-            if (lastLogFile.length() < maxFileSize) {
+            if (lastLogFile.length() < maxFileSize && logFiles.length <= maxLogFiles) {
                 logFile = lastLogFile;
             } else {
                 int newNumber = Integer.parseInt(lastLogFile.getName().replaceAll("log|\\.txt", "")) + 1;
@@ -163,6 +170,11 @@ public class RNReactLoggingModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setMaxFileSize(long maxFileSize) {
         this.maxFileSize = maxFileSize;
+    }
+
+    @ReactMethod
+    public void setMaxLogFiles(int filesLength) {
+        this.maxLogFiles = filesLength;
     }
 
     @ReactMethod
