@@ -32,21 +32,23 @@ export default {
 		RNReactLogging.setConsoleLogEnabled(enabled);
 	},
 	setFileLogEnabled: async enabled => {
-		if (Platform.OS === "android") {
-			const writePermissions = await PermissionsAndroid.request(
-				PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-			);
-			const readPermissions = await PermissionsAndroid.request(
-				PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-			);
-			permissionsAccepted =
-				readPermissions === "granted" && writePermissions === "granted";
-		} else {
-			permissionsAccepted = true;
-		}
-		if (permissionsAccepted) {
-			RNReactLogging.setFileLogEnabled(enabled);
-		}
+		if (enabled) {
+			if (Platform.OS === "android") {
+				const writePermissions = await PermissionsAndroid.request(
+					PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+				);
+				const readPermissions = await PermissionsAndroid.request(
+					PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+				);
+				permissionsAccepted =
+					readPermissions === "granted" && writePermissions === "granted";
+			} else {
+				permissionsAccepted = true;
+			}
+			if (permissionsAccepted) {
+				RNReactLogging.setFileLogEnabled(enabled);
+			}
+                }
 	},
 	setMaxFileSize: size => {
 		RNReactLogging.setMaxFileSize(size);
