@@ -3,10 +3,12 @@ import { NativeModules, PermissionsAndroid, Platform } from "react-native";
 const { RNReactLogging } = NativeModules;
 
 let permissionsAccepted = null;
+let middleware = () => {}
 
 export default {
 	log: (...content) => {
 		console.log(...content);
+		middleware(...content);
 		const logData = content.map(logItem => {
 			try {
 				if (typeof logItem === "object") {
@@ -53,5 +55,8 @@ export default {
 	},
 	listAllLogFiles: () => {
 		return RNReactLogging.listAllLogFiles();
-	}
+	},
+	inject: (_middleware => {
+		middleware = _middleware
+	})
 };
