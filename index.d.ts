@@ -23,4 +23,6 @@ declare module "react-native-file-log" {
 	 * Returns an array with the paths for all log files saved.
 	 */
 	function listAllLogFiles(): Promise<string[]>;
+
+	function inject(middleware: (...content: any[]) => void): void;
 }
